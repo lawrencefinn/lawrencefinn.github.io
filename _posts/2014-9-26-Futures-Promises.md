@@ -30,5 +30,6 @@ anonymous function to the library.  It looks something like this:
 ```
 httpLibrary.get("www.meow.com", function(data, error) {
     //do some data manipulation here
+
 });
 ```
