@@ -23,7 +23,7 @@ Event driven programming is based executing code (callbacks) on specific IO even
 object oriented language with all of these callbacks?
 
 #What are futures?#
-Futures are an object oriented methodology for encapsulating callbacks from IO driven events. Are you asking yourself "what in hell does that mean?" i
+Futures are an object oriented methodology for encapsulating callbacks from IO driven events. Are you asking yourself "what in hell does that mean?" 
 you are not alone.  Let's imagine that there is some library you are using that uses some event driven process to do web requests.  When the response
 comes in, you want to manipulate the data somehow.  How would you imagine that you would interact with such library?  In javascript, you pass an 
 anonymous function to the library.  It looks something like this:
@@ -32,3 +32,12 @@ httpLibrary.get("www.meow.com", function(data, error) {
     //do some data manipulation here
 });
 {% endhighlight %}
+But that won't fly in Java.  It would look something more like this:
+{% highlight java %}
+Future<Response> respFut = httpLibrary.get("www.meow.com");
+respFut.onComplete((data) -> {
+  //do some data manipulation here
+});
+{% endhighlight %}
+
+
