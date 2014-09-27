@@ -29,7 +29,6 @@ comes in, you want to manipulate the data somehow.  How would you imagine that y
 anonymous function to the library.  It looks something like this:
 ```
 httpLibrary.get("www.meow.com", function(data, error) {
-
     //do some data manipulation here
 });
 ```
