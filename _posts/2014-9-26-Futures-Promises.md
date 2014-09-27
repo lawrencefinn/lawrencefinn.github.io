@@ -29,15 +29,43 @@ comes in, you want to manipulate the data somehow.  How would you imagine that y
 anonymous function to the library.  It looks something like this:
 {% highlight javascript %}
 httpLibrary.get("www.meow.com", function(data, error) {
+    //CODEBLOCK1
     //do some data manipulation here
 });
+//Other code here
 {% endhighlight %}
 But that won't fly in Java.  It would look something more like this:
 {% highlight java %}
 Future<Response> respFut = httpLibrary.get("www.meow.com");
 respFut.onComplete((data) -> {
+  //CODEBLOCK1
   //do some data manipulation here
 });
+//Other code here
+{% endhighlight %}
+What this is saying is do some get request on www.meow.com.  Keep executing code (other code here) without waiting for any response.  
+When the response comes back, execute "CODEBLOCK1" in a different context.  This is what the kids call asynchronous programming.
+
+#How to use futures?#
+There are a a few good future libraries out now for Java.  I personally like the [scala.concurrent package](http://www.scala-lang.org/files/archive/nightly/docs/library/index.html#scala.concurrent.Future).  It comes with a lot of good functionality built in that is very easy to use.  I personally use the 
+[play framework](https://www.playframework.com/) a lot.  Their controllers allow you to return a promise (I will get into that later) and the framework
+itself will handle waiting for a future to complete and return the result to the requester.  
+
+As I mentioned earlier, you can use an onComplete function to take some action when a future completes.  However, imagine that you are writing a function
+that makes some web call using a future and you want to manipulate the response and return it to whoever is calling the function.  onComplete will not work because it
+returns a void and whatever happens in the onComplete cannot leave the scope of the anonymous function.  You can code your function to wait for the
+response, do the manipulations and return it, but then you are blocking whatever thread calls your function (which is bad, mmmkay?).  What you want to do is be able to
+chain some function to be called when the response is ready and that function will return a future of some data type.  That's where map and flatMap
+comes into play.  With map/flatMap functions, you pass in code to be executed when the response is ready.  Whatever your code returns gets wrapped into
+a future.  Example:
+{% highlight java %}
+public Future<String> getDataStripSpaces() {
+  Future<String> dataFut = httpLibrary.get("www.meow.com");
+  Future<String> replaceFut = dataFut.map(response -> {
+    return response.replaceAll(" ", "");
+  });
+  return replaceFut;
+}
 {% endhighlight %}
 
 
