@@ -27,9 +27,9 @@ Futures are an object oriented methodology for encapsulating callbacks from IO d
 you are not alone.  Let's imagine that there is some library you are using that uses some event driven process to do web requests.  When the response
 comes in, you want to manipulate the data somehow.  How would you imagine that you would interact with such library?  In javascript, you pass an 
 anonymous function to the library.  It looks something like this:
-
 ```
 httpLibrary.get("www.meow.com", function(data, error) {
+
     //do some data manipulation here
 });
 ```
