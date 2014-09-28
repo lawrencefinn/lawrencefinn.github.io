@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Futures, Promises, and Async Programming on the JVM
+title: Futures, Promises, and Async JVM Programming
 ---
 
 Futures are becoming a very hot topic in the JVM world.  I have asked many friends and collegues if they know what a future is and how to use it.  
