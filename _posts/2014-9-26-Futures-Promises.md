@@ -68,4 +68,38 @@ public Future<String> getDataStripSpaces() {
 }
 {% endhighlight %}
 
+This function is nonblocking.  It is up to the user how to handle this future.  They can block on it (we hope not) or hopefully they are using a nice 
+framework that lets the future get handled in a nonblocking manner.
 
+#So what is a promise?#
+I have spoken a lot about how to consume and use futures.  But where do futures come from?  One way to create a future is to use a promise.  Assume that
+you have some library that executes something asynchronously (maybe in a thread, maybe with libevent, whatever).  You will want to return a future
+so that people can easily use your library.  A promise is how you accomplish this.  Promises have a simple api with two main functions, future() 
+and success(T value).  The future function simply returns a future tied to the promise.  The success function is how you trigger all of the complete
+triggers on the future.  Here is a silly but simple example:
+{% highlight java %}
+public Future<String> getSomeDumbString() {
+  final Promise<String> p = new Promise<>();
+  new Thread(
+      () -> {
+        Thread.sleep(10000);
+        p.success("some dumb string");
+      }
+    ).start();
+  return p.future();
+}
+{% endhighlight %}
+{% highlight java %}
+Future<String> stringFut = getSomeDumbString();
+stringFut.onComplete((data) -> {
+  //this piece gets executed when p.success gets ran
+  //.. some code
+});
+{% endhighlight %}
+When p.success is actually executed, any code waiting on the future gets executed. This works with onComplete, map, etc.,. 
+
+#Conclusion#
+Asynchronous programming is a very powerful and complex process.  It allows you to write code that depends on socket data without 
+blocking up any threads.  Futures are a simple way to encapsulate and develop within asynchronous programming.
+
+Remember, don't block your futures and threads!
