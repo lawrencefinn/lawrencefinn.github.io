@@ -94,6 +94,9 @@ stringFut.onComplete((data) -> {
 {% endhighlight %}
 When p.success is actually executed, any code waiting on the future gets executed. This works with onComplete, map, etc.,. 
 
+#Exceptions#
+Just a quick note about exceptions.  Exceptions that happen in a future cannot be thrown or caught.  The code that is causing an exception is happening in the future, so how could you catch it?  Luckily, futures have ways to pass on a failure, and you can listen for failures by using a function like onFailure.
+
 #Conclusion#
 Asynchronous programming is a very powerful and complex process.  It allows you to write code that depends on socket data without 
 blocking up any threads.  Futures are a simple way to encapsulate and develop within asynchronous programming.
